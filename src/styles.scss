@@ -1,0 +1,206 @@
+// =============================================================================
+//                             MADE BY TOM PLANCHE
+//                            tomplanche@icloud.com
+//                            github.com/tomPlanche
+// =============================================================================
+@import "scss/reset";
+@import "scss/base";
+
+// -------------------------------- VARIABLES ----------------------------------
+$black: #111;
+$white: #eee;
+
+$button-border-radius: 40px;
+$button-bg: transparent;
+$button-stroke-width: 1px;
+$button-stroke-width-hover: 1px;
+
+$cursor-stroke: #fff;
+$cursor-fill: #fff;
+$cursor-stroke-width: 1px;
+// ------------------------------ END VARIABLES --------------------------------
+
+
+// ---------------------------------- CODE -------------------------------------
+body {
+  width: 100vw;
+  //height: 100vh;
+
+  padding: 0;
+  margin: 0;
+
+  // Hide scrollbar
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  background: $black;
+
+  // Hide scrollbar
+  &::-webkit-scrollbar { /* WebKit & blink */
+    width: 0;
+    height: 0;
+  }
+
+  header {
+    height: 8vh;
+    width: 100vw;
+
+    position: absolute;
+    top: 0;
+
+    // Blurry background
+    background-color: #11111199;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px); // Compatible with Safari
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    h1 {
+      color: $white;
+      font-size: 2rem;
+
+      font-family: "Fira Code", sans-serif;
+    }
+  }
+
+  main {
+    height: 100vh;
+    width: 100vw;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  footer {
+    height: 8vh;
+    width: 100vw;
+
+    // Blurry background
+    background-color: #11111199;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px); // Compatible with Safari
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// CUSTOM BUTTON --------------------------------------------------------------
+.button {
+  min-width: 7rem;
+  height: 3rem;
+
+  -moz-appearance: none;
+  -webkit-appearance: none;
+
+  border-width: $button-stroke-width;
+  border-color: $white;
+  border-style: solid;
+  border-radius: $button-border-radius;
+
+  color: $white;
+
+  background: $button-bg;
+
+  padding: 0;
+  margin: 1rem;
+
+  font-family: inherit;
+  font-size: 1rem;
+
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:focus,
+  &.button--hover {
+    outline: none;
+    border-width: $button-stroke-width-hover;
+    border-color: $white;
+
+    .button__text {
+      .button__text-inner {
+        color: $black;
+      }
+    }
+
+  }
+
+  .button__filler {
+    background: $white;
+    position: absolute;
+    width: 150%;
+    height: 200%;
+    border-radius: 50%;
+    top: -50%;
+    left: -25%;
+    transform: translate3d(0,75%,0);
+  }
+
+  .button__text,
+  .button__text-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    color: $white;
+  }
+}
+// END CUSTOM BUTTON ----------------------------------------------------------
+
+// CUSTOM CURSOR --------------------------------------------------------------
+.cursor {
+  display: none;
+  height: 25px;
+  width: 25px;
+
+  z-index: 999;
+}
+
+@media (any-pointer: fine) {
+  .cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: block;
+    pointer-events: none;
+  }
+  .cursor__inner {
+    fill: $cursor-fill;
+    stroke: $cursor-stroke;
+    stroke-width: $cursor-stroke-width;
+  }
+}
+// END CUSTOM CURSOR ----------------------------------------------------------
+
+
+* {
+  text-decoration: none;
+  font-weight: normal;
+
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+
+  font-family: 'Fira Code', monospace;
+}
+// -------------------------------- END CODE -----------------------------------
