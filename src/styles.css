@@ -130,30 +130,6 @@ iframe {
   /* Opera/IE 8+ */
 }
 
-@font-face {
-  font-family: "PP Mondwest";
-  src: url("./fonts/PP Mondwest/PPMondwest-Bold.woff2") format("woff2");
-  font-weight: bold;
-  font-style: normal;
-}
-@font-face {
-  font-family: "PP Mondwest";
-  src: url("./fonts/PP Mondwest/PPMondwest-Regular.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: "PP NeueBit";
-  src: url("./fonts/PP NeueBit/PPNeueBit-Bold.woff2") format("woff2");
-  font-weight: bold;
-  font-style: normal;
-}
-@font-face {
-  font-family: "PP NeueBit";
-  src: url("./fonts/PP NeueBit/PPNeueBit-Regular.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
 body {
   width: 100vw;
   padding: 0;

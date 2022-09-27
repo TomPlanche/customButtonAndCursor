@@ -13,9 +13,7 @@ window.addEventListener('mousemove', ev => mouse = getMousePos(ev));
  *     <circle class="cursor__inner" cx="12.5" cy="12.5" r="6.25"/>
  * </svg>
  *
- * And the following CSS:
- *
- *
+ * And the recommended CSS: look at the CSS file.
  *
  */
 export default class CustomCursor {
@@ -39,10 +37,13 @@ export default class CustomCursor {
         this.onMouseMoveEv = () => {
             this.renderedStyles.tx.previous = this.renderedStyles.tx.current = mouse.x - this.bounds.width / 2;
             this.renderedStyles.ty.previous = this.renderedStyles.ty.previous = mouse.y - this.bounds.height / 2;
+            
             gsap.to(this.DOM.el, {duration: 0.9, ease: 'Power3.easeOut', opacity: 1});
+            
             requestAnimationFrame(() => this.render());
             window.removeEventListener('mousemove', this.onMouseMoveEv);
         };
+        
         window.addEventListener('mousemove', this.onMouseMoveEv);
     }
     
@@ -64,6 +65,26 @@ export default class CustomCursor {
         this.renderedStyles['opacity'].current = 1;
         this.DOM.el.children[0].style.stroke = "#eee";
         this.DOM.el.children[0].style.fill = "#eee";
+    }
+    
+    enterCustom(options) {
+        this.renderedStyles['scale'].current = 2;
+        this.renderedStyles['opacity'].current = 1;
+        
+        for (const key in options) {
+            if (key === 'style') {
+                for (const styleKey in options[key]) {
+                    this.DOM.el.children[0].style[styleKey] = options[key][styleKey];
+                }
+            } else {
+                this.DOM.el[key] = options[key];
+            }
+        }
+    }
+    
+    leaveCustom() {
+        this.DOM.el.innerHTML = "<circle class=\"cursor__inner\" cx=\"12.5\" cy=\"12.5\" r=\"6.25\"/>";
+        this.leave();
     }
     
     /**
