@@ -41,6 +41,7 @@ body {
   box-sizing: border-box;
 
   background: $black;
+  color: $white;
 
   // Hide scrollbar
   &::-webkit-scrollbar { /* WebKit & blink */
@@ -66,7 +67,6 @@ body {
     justify-content: center;
 
     h1 {
-      color: $white;
       font-size: 2rem;
 
       font-family: "Fira Code", sans-serif;
@@ -84,8 +84,13 @@ body {
   }
 
   footer {
+    position: fixed;
+    bottom: 0;
+
     height: 8vh;
     width: 100vw;
+
+    padding: 2rem;
 
     // Blurry background
     background-color: #11111199;
@@ -95,7 +100,22 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+
+    span {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      gap: 2em;
+    }
+  }
+
+  svg {
+    path {
+      fill: $white;
+    }
   }
 }
 
@@ -201,6 +221,6 @@ body {
 
   box-sizing: border-box;
 
-  font-family: 'Fira Code', monospace;
+  font-family: 'Fira Code', monospace !important;
 }
 // -------------------------------- END CODE -----------------------------------

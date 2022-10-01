@@ -1,5 +1,5 @@
 
-import { lerp, getMousePos, calcWinsize, distance, verifyIsInBounds } from "./myFuncs.js";
+import {lerp, getMousePos, calcWinsize, distance, verifyIsInBounds} from "./myFuncs.js";
 
 // Calculate the viewport size
 let winsize = calcWinsize();
@@ -95,19 +95,22 @@ export default class ButtonCtrl {
      * Initialize the events.
      */
     initEvents() {
-        this.onResize = () => this.calculateSizePosition();
+        // this.DOM.el.addEventListener('focus', () => {
+        //     this.enter();
+        //     this.state.focus = true;
+        //     setTimeout(() => {
+        //         this.leave();
+        //         this.state.focus = false;
+        //     }, 5000);
+        // });
+        //
+        // this.DOM.el.addEventListener('blur', () => {
+        //     this.state.focus = false;
+        //     this.leave();
+        // });
         
-        this.DOM.el.addEventListener('focus', () => {
-            this.enter();
-            this.state.focus = true;
-        });
-        
-        this.DOM.el.addEventListener('blur', () => {
-            this.leave();
-            this.state.focus = false;
-        });
-        
-        window.addEventListener('resize', this.onResize);
+        window.addEventListener('resize', this.calculateSizePosition);
+        window.addEventListener('scroll', this.calculateSizePosition);
     }
     
     /**

@@ -144,6 +144,7 @@ body {
   justify-content: center;
   box-sizing: border-box;
   background: #111;
+  color: #eee;
 }
 body::-webkit-scrollbar {
   /* WebKit & blink */
@@ -164,7 +165,6 @@ body header {
   justify-content: center;
 }
 body header h1 {
-  color: #eee;
   font-size: 2rem;
   font-family: "Fira Code", sans-serif;
 }
@@ -177,15 +177,28 @@ body main {
   justify-content: center;
 }
 body footer {
+  position: fixed;
+  bottom: 0;
   height: 8vh;
   width: 100vw;
+  padding: 2rem;
   background-color: rgba(17, 17, 17, 0.6);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
+}
+body footer span {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
+  gap: 2em;
+}
+body svg path {
+  fill: #eee;
 }
 
 .button {
@@ -264,7 +277,7 @@ body footer {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Fira Code", monospace;
+  font-family: "Fira Code", monospace !important;
 }
 
 /*# sourceMappingURL=styles.css.map */
