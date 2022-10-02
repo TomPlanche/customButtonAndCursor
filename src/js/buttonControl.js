@@ -109,8 +109,8 @@ export default class ButtonCtrl {
         //     this.leave();
         // });
         
-        window.addEventListener('resize', this.calculateSizePosition);
-        window.addEventListener('scroll', this.calculateSizePosition);
+        window.addEventListener('resize', () => this.calculateSizePosition());
+        window.addEventListener('scroll', () => this.calculateSizePosition);
     }
     
     /**
