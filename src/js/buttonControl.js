@@ -110,7 +110,7 @@ export default class ButtonCtrl {
         // });
         
         window.addEventListener('resize', () => this.calculateSizePosition());
-        window.addEventListener('scroll', () => this.calculateSizePosition);
+        window.addEventListener('scroll', () => this.calculateSizePosition());
     }
     
     /**

@@ -169,7 +169,7 @@ body header h1 {
   font-family: "Fira Code", sans-serif;
 }
 body main {
-  height: 100vh;
+  height: 200vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
