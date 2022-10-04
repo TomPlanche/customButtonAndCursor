@@ -169,7 +169,7 @@ body header h1 {
   font-family: "Fira Code", sans-serif;
 }
 body main {
-  height: 200vh;
+  height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -212,7 +212,6 @@ body svg path {
   border-radius: 40px;
   color: #eee;
   background: transparent;
-  padding: 0;
   margin: 1rem;
   font-family: inherit;
   font-size: 1rem;
