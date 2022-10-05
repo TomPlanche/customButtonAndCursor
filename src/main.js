@@ -5,7 +5,7 @@
 // =============================================================================
 
 import customCursor from './js/customCursor.js';
-import ButtonCtrl from './js/buttonControl.js';
+import ButtonControl from './js/buttonControl.js';
 import {
     calcWinsize,
     distance,
@@ -27,7 +27,7 @@ const githubSVG = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height
 const mailSVG = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\"><path d=\"M12 12.713l-11.985-9.713h23.97l-11.985 9.713zm0 2.574l-12-9.725v15.438h24v-15.438l-12 9.725z\"/></svg>";
 
 const cursor = new customCursor(document.querySelector('.cursor'));
-const buttonMenu = new ButtonCtrl(
+const buttonMenu = new ButtonControl(
 		document.querySelector('#main-btn'),
 		{
 			customCursor: cursor,
@@ -87,6 +87,21 @@ document.querySelectorAll(".mailLogoHover").forEach((elem) => {
 	elem.addEventListener("mouseleave", () => {
 		cursor.leaveCustom();
 	});
+});
+
+
+document.querySelector("#redCursorTrigger").addEventListener("mouseenter",() => {
+	cursor.enterCustom({
+		style: {
+			fill: "red",
+			stroke: "red"
+		},
+		opacity: .5
+	});
+});
+
+document.querySelector("#redCursorTrigger").addEventListener("mouseleave",() => {
+	cursor.leaveCustom();
 });
 // ------------------------------- END SETUP -----------------------------------
 

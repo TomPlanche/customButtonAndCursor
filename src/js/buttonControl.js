@@ -22,33 +22,40 @@ window.addEventListener('mousemove', ev => mousepos = getMousePos(ev));
  * 	   </span>
  * </button>
  */
-export default class ButtonCtrl {
+export default class ButtonControl {
     /**
-     * ButtonCtrl constructor.
+     * ButtonControl constructor.
      * @param el - The button DOM element.
      * @param options - Options for the button.
      * Accepted options:
      *    - customCursor: if not undefined, the button will send the button events to the cursor.
-     *    - distanceNeededToTrigger: the movement will take place when the distance from the mouse to the center of the button is lower than this value.
+     *    - distanceNeededToTrigger: the distance needed to trigger the button.
+     *    - distanceToLeave: the distance needed to leave the button.
      */
     constructor(
             el,
             options = undefined
         ) {
-        // DOM elements
-        // el: main button
-        // text: inner text element
+        /**
+         * DOM Elements
+         * - el - the button element
+         * - filler - the button's filler
+         * - text - the button's text
+         * - textinner - the button's text inner
+         */
         this.DOM = {el: el};
         this.DOM.filler = this.DOM.el.querySelector('.button__filler');
         this.DOM.text = this.DOM.el.querySelector('.button__text');
         this.DOM.textinner = this.DOM.el.querySelector('.button__text-inner');
 
+        // Default options
         let acceptedOptions = {
             customCursor: undefined,
             distanceNeededToTrigger: 1.2,
             distanceToLeave: .5
         }
         
+        // Override default options with the ones passed as parameter
         if (options !== undefined) {
             for (const [key, value] of Object.entries(options)) {
                 if (key in acceptedOptions) {
@@ -70,8 +77,6 @@ export default class ButtonCtrl {
             hover: false,
             focus: false
         };
-
-        this.distanceNeededToTrigger = .5;
 
 				// calculate size/position
         this.calculateSizePosition();
@@ -145,6 +150,15 @@ export default class ButtonCtrl {
             this.renderedStyles[key].previous = lerp(this.renderedStyles[key].previous, this.renderedStyles[key].current, this.renderedStyles[key].amt);
         }
     
+        // Prevent the button from translating with very small values.
+        if (this.renderedStyles['tx'].previous < 0.01 && this.renderedStyles['tx'].previous > -0.01) {
+            this.renderedStyles['tx'].previous = 0;
+        }
+        
+        if (this.renderedStyles['ty'].previous < 0.01 && this.renderedStyles['ty'].previous > -0.01) {
+            this.renderedStyles['ty'].previous = 0;
+        }
+        
         this.DOM.el.style.transform = `translate3d(${this.renderedStyles['tx'].previous}px, ${this.renderedStyles['ty'].previous}px, 0)`;
         this.DOM.text.style.transform = `translate3d(${-this.renderedStyles['tx'].previous*0.6}px, ${-this.renderedStyles['ty'].previous*0.6}px, 0)`;
     
