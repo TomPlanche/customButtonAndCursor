@@ -88,6 +88,16 @@ export default class ButtonControl {
         requestAnimationFrame(() => this.render());
     }
     
+    
+    /**
+     * Set the custom cursor.
+     * @param customCursor - The custom cursor.
+     */
+    setCustomCursor(customCursor) {
+        this.acceptedOptions.customCursor = customCursor;
+    }
+    
+    
     /**
      * Calculate self position and size.
      */
@@ -135,7 +145,9 @@ export default class ButtonControl {
         let y = 0;
     
         if ( verifyIsInBounds(mousepos, this.rect, this.acceptedOptions.distanceNeededToTrigger) ) {
-            if ( !this.state.hover ) { this.enter(); }
+            if ( !this.state.hover ) {
+                this.enter()
+            }
             x = (mousepos.x - (this.rect.left + this.rect.width / 2)) * this.acceptedOptions.distanceNeededToTrigger;
             y = (mousepos.y - (this.rect.top + this.rect.height / 2)) * this.acceptedOptions.distanceNeededToTrigger;
         }
@@ -171,7 +183,10 @@ export default class ButtonControl {
     enter() {
         this.state.hover = true;
         this.DOM.el.classList.add('button--hover');
-        this.acceptedOptions.customCursor.enter();
+        
+        if (this.acceptedOptions.customCursor !== undefined) {
+            this.acceptedOptions.customCursor.enter();
+        }
         
         gsap.killTweensOf(this.DOM.filler);
         gsap.killTweensOf(this.DOM.textinner);
@@ -200,7 +215,9 @@ export default class ButtonControl {
         this.DOM.el.classList.remove('button--hover');
         document.body.classList.remove('active');
         
-        this.acceptedOptions.customCursor.leave();
+        if (this.acceptedOptions.customCursor !== undefined) {
+            this.acceptedOptions.customCursor.leave();
+        }
         
 
         gsap.killTweensOf(this.DOM.filler);

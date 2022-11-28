@@ -81,6 +81,10 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    p {
+      padding: 3rem 0;
+    }
   }
 
   footer {
@@ -137,6 +141,7 @@ body {
   background: $button-bg;
 
   margin: 1rem;
+  padding: 0 1rem;
 
   font-family: inherit;
   font-size: 1rem;
@@ -186,26 +191,39 @@ body {
 // END CUSTOM BUTTON ----------------------------------------------------------
 
 // CUSTOM CURSOR --------------------------------------------------------------
-.cursor {
-  display: none;
-  height: 25px;
-  width: 25px;
+#cursorDiv {
+  position: absolute;
+  top: 0;
+  left: 0;
 
-  z-index: 999;
-}
+  z-index: 999999;
 
-@media (any-pointer: fine) {
-  .cursor {
-    position: fixed;
+  #mainCursor {
+    height: 100%;
+    width: 100%;
+    transition: color .5s ease-in-out;
+  }
+
+  #cursorText {
+    position: absolute;
     top: 0;
     left: 0;
-    display: block;
-    pointer-events: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+    width: 100%;
   }
-  .cursor__inner {
-    fill: $cursor-fill;
-    stroke: $cursor-stroke;
-    stroke-width: $cursor-stroke-width;
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    height: 100%;
+    width: 100%;
   }
 }
 // END CUSTOM CURSOR ----------------------------------------------------------

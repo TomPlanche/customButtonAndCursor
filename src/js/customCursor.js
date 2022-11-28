@@ -1,174 +1,279 @@
-
-import { lerp, getMousePos } from "./myFuncs.js";
-
-// Track the mouse position
-let mouse = {x: 0, y: 0};
-window.addEventListener('mousemove', ev => mouse = getMousePos(ev));
-
 /**
- * Custom cursor class
- * The cursor should have the following structure:
- * 
- * <svg class="cursor" width="25" height="25" viewBox="0 0 25 25">
- *     <circle class="cursor__inner" cx="12.5" cy="12.5" r="6.25"/>
- * </svg>
- *
- * And the recommended CSS: look at the CSS file.
- *
+ * @file customCursor.js
+ * @description My implementation of a custom cursor in JavaScript.
+ * @author: Tom Planche
+ * @license: MIT
  */
-export default class CustomCursor {
-    /**
-     * CustomCursor constructor.
-     * @param el - The cursor element.
-     */
-    constructor(el) {
-        this.DOM = {el: el};
-        this.DOM.el.style.opacity = "0";
-        
-        this.bounds = this.DOM.el.getBoundingClientRect();
-        
-        // Amt is the amount of movement, the greater, the faster.
-        this.renderedStyles = {
-            tx: {previous: 0, current: 0, amt: 0.2},
-            ty: {previous: 0, current: 0, amt: 0.2},
-            scale: {previous: 1, current: 1, amt: 0.2},
-            opacity: {previous: 1, current: 1, amt: 0.2}
-        };
 
-        // Mouse move handler.
-        this.onMouseMoveEv = () => {
-            this.renderedStyles.tx.previous = this.renderedStyles.tx.current = mouse.x - this.bounds.width / 2;
-            this.renderedStyles.ty.previous = this.renderedStyles.ty.current = mouse.y - this.bounds.height / 2;
-            
-            gsap.to(this.DOM.el, {duration: 0.9, ease: 'Power3.easeOut', opacity: 1});
-            
-            requestAnimationFrame(() => this.render());
-            window.removeEventListener('mousemove', this.onMouseMoveEv);
-        };
-        
-        // Mouse move event.
-        window.addEventListener('mousemove', this.onMouseMoveEv);
-    }
-    
-    /**
-     * When the cursor 'enter' is trigerred.
-     */
-    enter() {
-        this.renderedStyles['scale'].current = 4;
-        this.renderedStyles['opacity'].current = 0.6;
-        this.DOM.el.children[0].style.fill = "#111";
-        this.DOM.el.children[0].style.stroke = "#111";
-    }
-    
-    /**
-     * When the cursor 'leave' is trigerred.
-     */
-    leave() {
-        this.renderedStyles['scale'].current = 1;
-        this.renderedStyles['opacity'].current = 1;
-        this.DOM.el.children[0].style.stroke = "#eee";
-        this.DOM.el.children[0].style.fill = "#eee";
-    }
-    
-    /**
-     * Overwrite the cursor options for a custom enter.
-     * @param options - options for the custom enter. !! If the options are related to style, they must be in a style object. !!
-     *
-     * Example:
-     *   - I want the cursor to be the github logo when I hover a specified element and the fill to be red.
-     *     cursor.enterCustom({
-     * 		   innerHTML: githubSVG,
-     * 		   style: {
-     * 		     fill: "red",
-     * 		     stroke: "red"
-     * 		   }
-     * 		 });
-     */
-    enterCustom(options) {
-        this.renderedStyles['scale'].current = 2;
-        this.renderedStyles['opacity'].current = 1;
-        
-        this.changesSettings = {};
-        
-        // List all the options that'll be changed and its values in order to reset them later.
-        for (const key in options) {
-            if (key === "style") {
-                for (const styleKey in this.changesSettings[key]) {
-                    this.changesSettings[key][styleKey] = this.DOM.el.children[0].style[styleKey]
-                }
-            } else {
-                this.changesSettings[key] = this.DOM.el[key];
-            }
-        }
-        
-        // Put the 'scale' option first in order to be applied first.
-        if (options.scale) {
-            this.DOM.el.style.transform = `scale(${options.scale})`;
-            delete options.scale;
-        }
-        
-        // Apply the new options.
-        for (const key in options) {
-            switch (key) {
-                case "style":
-                    for (const styleKey in options[key]) {
-                    this.DOM.el.children[0].style[styleKey] = options[key][styleKey];
-                };
-                break;
-                case "scale":
-                    this.renderedStyles.scale.current = options[key]
-                    break;
-                case "opacity":
-                    this.renderedStyles.opacity.current = options[key]
-                    break;
-                default:
-                    this.DOM.el[key] = options[key];
-            }
-        }
-    }
-    
-    /**
-     * Reset the factory settings of the cursor.
-     */
-    leaveCustom() {
-        // Reset the options.
-        this.renderedStyles['scale'].current = 1;
-        this.renderedStyles['opacity'].current = 1;
-        
-        // Put the 'scale' option first in order to be applied first.
-        if (this.changesSettings.scale) {
-            this.DOM.el.style.transform = `scale(${this.changesSettings.scale})`;
-            delete this.changesSettings.scale;
-        }
-        
-        for (const key in this.changesSettings) {
-            if (key === "style") {
-                for (const styleKey in this.changesSettings[key]) {
-                    this.DOM.el.children[0].style[styleKey] = this.changesSettings[key][styleKey];
-                }
-            } else {
-                this.DOM.el[key] = this.changesSettings[key];
-            }
-        }
-        
-        // Reset the cursor to the default settings.
-        this.leave();
-    }
-    
-    /**
-     * Render the cursor.
-     */
-    render() {
-        this.renderedStyles['tx'].current = mouse.x - this.bounds.width / 2;
-        this.renderedStyles['ty'].current = mouse.y - this.bounds.height / 2;
+// Imports
+import { mouse } from "../main.js";
+import { lerp } from "./myFuncs.js";
 
-        for (const key in this.renderedStyles ) {
-            this.renderedStyles[key].previous = lerp(this.renderedStyles[key].previous, this.renderedStyles[key].current, this.renderedStyles[key].amt);
-        }
-        
-        this.DOM.el.style.transform = `translateX(${(this.renderedStyles['tx'].previous)}px) translateY(${this.renderedStyles['ty'].previous}px) scale(${this.renderedStyles['scale'].previous})`;
-        this.DOM.el.style.opacity = this.renderedStyles['opacity'].previous;
-
-        requestAnimationFrame(() => this.render());
-    }
+// CURSOR CLASS ===============================================================
+/**
+ * @classdesc A class that represents a cursor.
+ * @class customCursor
+ */
+export default class customCursor {
+	/**
+	 * @constructor
+	 * @param options - The options for the cursor.
+	 *
+	 * @todo implement the passing of options
+	 */
+	constructor(options = undefined) {
+		this.attributes = {
+			computable: {
+				x: {previous: 0, current: 0, amt: 0.2},
+				y: {previous: 0, current: 0, amt: 0.2},
+				scale: {previous: 1, current: 1, amt: 0.2},
+				opacity: {previous: 1, current: 1, amt: 0.2},
+				borderRadius: {previous: 999, current: 999, amt: 1},
+			},
+			nonComputable: {
+				height: 40,
+				width: 40,
+				color: "#7EC8E375",
+				isHovering: {value: false, target: undefined},
+			},
+			customEnterOptions: {}
+		}
+		
+		this.createDOM();
+	}
+	
+	/**
+	 * @function createCursor
+	 * @description Creates the cursor html element.
+	 */
+	createDOM() {
+		const cursorDiv = document.createElement("div");
+		cursorDiv.id = "cursorDiv";
+		cursorDiv.style.position = "fixed";
+		cursorDiv.style.top = "0"; // so that the tranlateX and translateY are relative to the top left corner of the screen
+		cursorDiv.style.left = "0"; // same as above
+		cursorDiv.style.pointerEvents = "none"; // so that the cursor doesn't interfere with the mouse events
+		cursorDiv.style.zIndex = "999";
+		
+		const cursor = document.createElement("div");
+		cursor.id = "mainCursor";
+		cursor.style.height = "100%";
+		cursor.style.width = "100%";
+		
+		cursorDiv.appendChild(cursor);
+		
+		document.querySelector("body").insertAdjacentHTML("afterbegin", cursorDiv.outerHTML);
+		this.cursorDiv = document.querySelector("#cursorDiv");
+		this.mainCursor = document.querySelector("#mainCursor");
+		
+		this.render();
+	}
+	
+	
+	/**
+	 * @function addText
+	 * @description Adds text to the cursor.
+	 * @param text - The text to add (in a dictionary with value as key and if options needed, options as key).
+	 * @example
+	 * addText("Hello World", {color: "red", fontSize: "20px"});
+	 *
+	 * @todo implement the passing of textOptions
+	 */
+	addText(text) {
+		if (this.attributes.customEnterOptions.text) return;
+		
+		const textDiv = document.createElement("div");
+		textDiv.id = "textDiv";
+		
+		textDiv.style.height = "100%";
+		textDiv.style.width = "100%";
+		
+		textDiv.style.position = "fixed";
+		textDiv.style.top = "0";
+		textDiv.style.left = "0";
+		textDiv.style.pointerEvents = "none"; // so that the cursor doesn't interfere with the mouse events
+		
+		textDiv.style.display = "flex";
+		textDiv.style.justifyContent = "center";
+		textDiv.style.alignItems = "center";
+		
+		
+		const textSpan = document.createElement("span");
+		textSpan.id = "mainText";
+		textSpan.innerHTML = text.value;
+		
+		if (text.options) {
+			for (const option in text.options) {
+				textSpan.style[option] = text.options[option];
+			}
+		}
+		
+		
+		
+		textDiv.appendChild(textSpan);
+		
+		document.querySelector("#cursorDiv").insertAdjacentHTML("beforeend", textDiv.outerHTML);
+		
+		this.attributes.customEnterOptions.text = document.querySelector("#textDiv");
+	
+	}
+	
+	
+	/**
+	 * @function addSvg
+	 * @description Adds an svg to the cursor.
+	 * @param svg - The svg to add (in a dictionary with value as key and if options needed, options as key).
+	 * @example
+	 * addSvg("<svg>..</svg>, {size: "50%"});
+	 *
+	 * @todo implement the passing of textOptions
+	 */
+	addSvg(svg) {
+		if (this.attributes.customEnterOptions.svg) return;
+		
+		const svgDiv = document.createElement("div");
+		svgDiv.id = "svgDiv";
+		
+		svgDiv.style.height = "100%";
+		svgDiv.style.width = "100%";
+		
+		svgDiv.style.position = "fixed";
+		svgDiv.style.top = "0";
+		svgDiv.style.left = "0";
+		svgDiv.style.pointerEvents = "none"; // so that the cursor doesn't interfere with the mouse events
+		
+		svgDiv.style.display = "flex";
+		svgDiv.style.justifyContent = "center";
+		svgDiv.style.alignItems = "center";
+		
+		// add the passed svg to the div
+		svgDiv.insertAdjacentHTML("beforeend", svg.value);
+		
+		const svgItself = svgDiv.querySelector("svg");
+		
+		if (svg.options) {
+			for (const option in svg.options) {
+				switch (option) {
+					case "size":
+						svgItself.style.height = svg.options[option];
+						svgItself.style.width = svg.options[option];
+						break;
+					default:
+						svgItself.style[option] = svg.options[option];
+				}
+			}
+		}
+		
+		document.querySelector("#cursorDiv").insertAdjacentHTML("beforeend", svgDiv.outerHTML);
+		
+		this.attributes.customEnterOptions.svg = document.querySelector("#svgDiv");
+	}
+	
+	
+	
+	/**
+	 * @function render
+	 * @description Renders the cursor.
+	 */
+	render() {
+		this.attributes.computable.x.current = mouse.x - this.attributes.nonComputable.width * this.attributes.computable.scale.current / 2;
+		this.attributes.computable.y.current = mouse.y - this.attributes.nonComputable.height * this.attributes.computable.scale.current / 2;
+		
+		// Lerp the values
+		for (const [key,] of Object.entries(this.attributes.computable)) {
+			this.attributes.computable[key].previous = lerp(this.attributes.computable[key].previous, this.attributes.computable[key].current, this.attributes.computable[key].amt);
+		}
+		
+		// Apply the values
+		this.cursorDiv.style.transform = `translate(${this.attributes.computable.x.previous}px, ${this.attributes.computable.y.previous}px)`;
+		this.mainCursor.style.height = `${this.attributes.nonComputable.height * this.attributes.computable.scale.previous}px`;
+		this.mainCursor.style.width = `${this.attributes.nonComputable.width * this.attributes.computable.scale.previous}px`;
+		this.mainCursor.style.backgroundColor = this.attributes.nonComputable.color;
+		this.mainCursor.style.opacity = this.attributes.computable.opacity.previous;
+		this.mainCursor.style.borderRadius = `${this.attributes.computable.borderRadius.previous}px`;
+		
+		requestAnimationFrame(this.render.bind(this));
+	}
+	
+	
+	/**
+	 * @function enter
+	 * @param options - Dictionary of options.
+	 * @description When the cursor enter a target.
+	 *
+	 * @todo implement the options
+	 */
+	enter(options = undefined) {
+		
+		const defaultOptions = {
+			scale: 1.5,
+			opacity: 0.5,
+		}
+		
+		options = {...defaultOptions, ...options};
+		
+		if (options) {
+			for (const [key, value] of Object.entries(options)) {
+				// if the key is either in the computable or nonComputable attributes, then we need to set the value
+				if (key in this.attributes.computable) {
+					this.attributes.customEnterOptions[key] = {previous: this.attributes.computable[key].current, current: value};
+					this.attributes.computable[key].current = value;
+				} else if (key in this.attributes.nonComputable) {
+					this.attributes.customEnterOptions[key] = {previous: this.attributes.nonComputable[key], current: value};
+					this.attributes.nonComputable[key] = value;
+				} else {
+					switch (key) {
+						case "text":
+							this.addText(value);
+							break;
+						case "svg":
+							this.addSvg(value);
+							break;
+						default:
+					}
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * @function leave
+	 * @description When the cursor leaves a target.
+	 * @todo implement the options
+	 */
+	leave() {
+		// if customEnterOptions is not empty, then we need to reset the values to the customEnterOptions values
+		if (Object.keys(this.attributes.customEnterOptions).length !== 0) {
+			for (const [key, value] of Object.entries(this.attributes.customEnterOptions)) {
+				// console.log(`${key}: ${value}`);
+				if (key in this.attributes.computable) {
+					this.attributes.computable[key].current = value.previous;
+				} else if (key in this.attributes.nonComputable) {
+					this.attributes.nonComputable[key] = value.previous;
+				} else {
+					switch (key) {
+						case "text":
+							this.attributes.customEnterOptions.text.remove();
+							delete this.attributes.customEnterOptions.text;
+							break;
+						case "svg":
+							this.attributes.customEnterOptions.svg.remove();
+							delete this.attributes.customEnterOptions.svg;
+							break;
+						default:
+							this.attributes.nonComputable[key] = value.previous;
+							break;
+					}
+				}
+			}
+			
+			this.attributes.customEnterOptions = {};
+		}
+		
+		// mandatory
+		this.attributes.computable.scale.current = 1;
+		this.attributes.computable.opacity.current = 1;
+	}
 }
+// END CURSOR CLASS ============================================================

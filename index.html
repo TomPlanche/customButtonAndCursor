@@ -30,10 +30,6 @@
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
 
-        <svg aria-hidden="true" class="cursor" width="25" height="25" viewBox="0 0 25 25">
-	        <circle class="cursor__inner" cx="12.5" cy="12.5" r="6.25"/>
-        </svg>
-
         <header>
 	        <h1>Tom Planche's custom button and cursor</h1>
 
@@ -48,12 +44,19 @@
 	        </button>
 
 	        <p id="redCursorTrigger">While hovering this, cursor should be red with an opacity of 0.5.</p>
+
+	        <button class="button" id="text-btn">
+		        <div class="button__filler"></div>
+		        <span class="button__text">
+			        <span class="button__text-inner">Text Cursor.</span>
+		        </span>
+	        </button>
         </main>
 
         <footer>
 	        <span>
-	            <a href="https://github.com/tomplanche" class="gitLogoHover ">GitHub</a>
-	            <a href="mailto:tomplanche@icloud.com?subject=Wow, you're great !" class="mailLogoHover ">Mail</a>
+	            <a href="https://github.com/tomplanche" class="github-cursor ">GitHub</a>
+	            <a href="mailto:tomplanche@icloud.com?subject=Wow, you're great !" class="mail-cursor ">Mail</a>
 	        </span>
 
 	        <span>
@@ -61,7 +64,7 @@
 	        </span>
 
 	        <span>
-		        <a href="https://github.com/tomplanche" class="gitLogoHover ">@Tom Planche - 2022</a>
+		        <a href="https://github.com/tomplanche" class="github-cursor ">@Tom Planche - 2022</a>
 	        </span>
         </footer>
         
