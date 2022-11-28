@@ -2,7 +2,7 @@
  * @file customCursor.js
  * @description My implementation of a custom cursor in JavaScript.
  * @author: Tom Planche
- * @license: MIT
+ * @license: Unilicense
  */
 
 // Imports

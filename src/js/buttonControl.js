@@ -1,3 +1,9 @@
+/**
+ * @file buttonControl.js
+ * @description My implementation of a custom button in JavaScript.
+ * @author: Tom Planche
+ * @license: Unilicense
+ */
 
 import {lerp, getMousePos, calcWinsize, distance, verifyIsInBounds} from "./myFuncs.js";
 
